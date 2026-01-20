@@ -36,12 +36,12 @@
         .main-content { flex-grow: 1; display: flex; flex-direction: column; background: var(--bg-light); }
         
         .global-header { 
-            height: 150px; background: white; display: flex; align-items: center; 
+            height: 140px; background: white; display: flex; align-items: center; 
             justify-content: space-between; padding: 0 40px; border-bottom: 2px solid var(--nctcog-blue);
         }
         .header-center { display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .header-taft-logo { height: 120px; object-fit: contain; }
-        .header-mtp-logo { height: 150px; object-fit: contain; }
+        .header-mtp-logo { height: 140px; object-fit: contain; }
         .header-tile-logo { height: 80px; object-fit: contain; }
         .sub-title { margin-top: 10px; color: #666; font-size: 24px; text-align: center; }
 
@@ -93,6 +93,38 @@
         /* 地图相关 */
         .map { position: absolute; top: 0; bottom: 0; width: 100%; }
         .mapboxgl-compare { background-color: var(--nctcog-green); width: 4px; }
+
+        #page-home.active {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), 
+                            url('background.jpg'); 
+            background-size: cover;      
+            background-position: center; 
+            background-repeat: no-repeat;
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;     
+            justify-content: flex-start;
+            padding-top: 5vh;
+        }
+        .page-header {
+            max-width: 1200px;     /* 设置最大宽度限制，防止在大屏幕上太宽 */
+            margin-left: 20px;     /* 左右 margin 设为 auto 实现水平居中 */
+            margin-right: auto;
+            padding: 5px;
+            text-align: left; /* 居中显示 */
+            background: #b2fab4; /* 浅色背景，可根据需要修改 */
+            margin-top: 5px;
+            position: left;
+
+        }
+
+        .page-header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+            font-weight: 600;
+        }
+
     </style>
 </head>
 <body>
@@ -117,25 +149,30 @@
                 <img src="mtp2050.png" alt="Mobility 2050" class="header-tile-logo">
                 <div class="sub-title">Travel Demand Forecast Summary</div>
             </div>
-
+            
             <img src="taft.jpg" alt="TAFT Logo" class="header-taft-logo">
         </header>
 
         <div class="view-container">
             <section id="page-home" class="page-view active">
-                <div style="padding: 60px; max-width: 900px; margin: 0 auto;">
-                    <h2 style="color: var(--nctcog-blue); text-align: center; font-size: 28px;">What is a Travel Demand Forecast?</h2>
-                    <p style="line-height: 1.8; font-size: 18px; color: #444; margin-top: 30px;">
+                <div style="padding: 50px; max-width: 1000px; margin: 0 auto;">
+                    <h2 style="color: var(--nctcog-blue); text-align: center; font-size:36px;">What is a Travel Demand Forecast?</h2>
+                    <p style="line-height: 1.8; font-size: 24px; color: #444; margin-top: 30px;">
                         A travel demand forecast is like a <b>crystal ball</b> for transportation planning—but based on data, not magic. 
-                        It predicts how people will <b>move</b> around in the future by looking at where we'll live, work, and play.
+                        It predicts how people will <b>move</b> around in the future by looking at where we'll live, work, and play, and what travel options we'll have.
                     </p>
-                    <p style="line-height: 1.8; font-size: 18px; color: #444;">
-                        As the <b>DFW region grows</b>, millions more trips will happen every day. A forecast helps us plan smarter, invest wisely, and keep the region moving.
+                    <p style="line-height: 1.8; font-size: 24px; color: #444;">
+                        As the DFW region grows, <b>millions</b> more trips will happen every day. Will roads handle the traffic? Will public transit keep up? How can biking and
+                        walking fit in? A <b>forecast</b> helps us answer these questions by modeling <b>future travel patterns</b> under different scenarios-so we can plan 
+                        smarter, invest wisely, and keep the region moving.
                     </p>
                 </div>
             </section>
 
             <section id="page-socecon" class="page-view">
+                <div class="page-header">
+                    <h1>4.8M New Neighbors, 3.5M New Jobs</h1>
+                </div>
                 <div class="dashboard-grid">
                     <div class="grid-item" id = "box-1">
                         <h3>Population Density Map (2019 vs 2050)</h3>
@@ -365,28 +402,53 @@
         const pop2050 = [2154649, 3070896, 1877834, 442300, 60353, 114156, 205992, 369655, 403260, 374523, 245607, 2866567, 171715];
         const emp2019 = [666573, 2365381, 435695, 86537, 16920, 32329, 47059, 80139, 55371, 68708, 55518, 1331384, 37311];
         const emp2050 = [1243326, 3289138, 953054, 206032, 31424, 52008, 94875, 166902, 189349, 169629, 134768, 2120920, 77102];
+        const calcGrowth = (current, future) => {
+            return current.map((val, i) => (((future[i] - val) / val) * 100).toFixed(1));};
+        const popGrowth = calcGrowth(pop2019, pop2050);
+        const empGrowth = calcGrowth(emp2019, emp2050);
 
         const c1 = echarts.init(document.getElementById('chart1'));
         c1.setOption({
-            tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
-            legend: { data: ['2019 Pop', '2050 Pop'], orient: 'vertical', right:'5%', top:'5%'},
-            grid:{bottom:'15%'},
-            xAxis: { type: 'category', data: counties, axisLabel: { interval:0, rotate: 30 } },
-            yAxis: { type: 'value', name: 'Population' },
+            tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' },
+                formatter: function(params) {
+                    let res = params[0].name + '<br/>';
+                    params.forEach(item => {
+                        res += item.marker + item.seriesName + ': ' + 
+                            (item.seriesType === 'line' ? item.value + '%' : item.value.toLocaleString()) + '<br/>';
+                    });
+                    return res;
+                } },
+            legend: { data: ['2019 Pop', '2050 Pop', 'Growth %'], top:'5%'},
+            grid:{bottom:'15%', right: '10%'},
+            xAxis: { type: 'category', data: counties, axisLabel: { interval:0 } },
+            yAxis: [{ type: 'value', name: 'Population',position: 'left' }, 
+            { type: 'value', name: 'Growth %', position: 'right',axisLabel: { formatter: '{value} %' },splitLine: { show: false } }],
             series: [{ name:'2019 Pop', type:'bar', data: pop2019, itemStyle: { color: '#87CEFA' } }, 
-            { name:'2050 Pop', type:'bar', data: pop2050, itemStyle: { color: '#5470c6' } }]
+            { name:'2050 Pop', type:'bar', data: pop2050, itemStyle: { color: '#5470c6' } },
+            { name:'Growth %', type:'line', data: popGrowth, yAxisIndex: 1, itemStyle: { color: '#2ecc71' }, symbol: 'circle', symbolSize: 8 }]
         });
         
         const c2 = echarts.init(document.getElementById('chart2'));
         c2.setOption({
-            tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
-            legend: { data: ['2019 Emp', '2050 Emp'], orient: 'vertical', right:'5%', top:'5%' },
-            grid:{bottom:'15%'},
-            xAxis: { type: 'category', data: counties, axisLabel: { interval:0, rotate: 30 } },
-            yAxis: { type: 'value', name: 'Employment' },
-            series: [{ name:'2019 Emp', type:'bar', data: emp2019, itemStyle: { color: '#FFB84D' } }, 
-            { name:'2050 Emp', type:'bar', data: emp2050, itemStyle: { color: '#E67E22' } }]
+            tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' },
+                formatter: function(params) {
+                    let res = params[0].name + '<br/>';
+                    params.forEach(item => {
+                        res += item.marker + item.seriesName + ': ' + 
+                            (item.seriesType === 'line' ? item.value + '%' : item.value.toLocaleString()) + '<br/>';
+                    });
+                    return res;
+                } },
+            legend: { data: ['2019 Emp', '2050 Emp', 'Growth %'], top:'5%'},
+            grid:{bottom:'15%', right: '10%'},
+            xAxis: { type: 'category', data: counties, axisLabel: { interval:0 } },
+            yAxis: [{ type: 'value', name: 'Employment',position: 'left' }, 
+            { type: 'value', name: 'Growth %', position: 'right',axisLabel: { formatter: '{value} %' },splitLine: { show: false } }],
+            series: [{ name:'2019 Emp', type:'bar', data: emp2019, itemStyle: { color: '#FFA500' } }, 
+            { name:'2050 Emp', type:'bar', data: emp2050, itemStyle: { color: '#FF8C00' } },
+            { name:'Growth %', type:'line', data: empGrowth, yAxisIndex: 1, itemStyle: { color: '#2ecc71' }, symbol: 'circle', symbolSize: 8 }]
         });
+        
         charts.push(c1, c2);
 
         initialized = true;
