@@ -418,13 +418,13 @@
                     });
                     return res;
                 } },
-            legend: { data: ['2019 Pop', '2050 Pop', 'Growth %'], top:'5%'},
+            legend: { data: ['2019 Population', '2050 Population', 'Growth %'], top:'5%'},
             grid:{bottom:'15%', right: '10%'},
             xAxis: { type: 'category', data: counties, axisLabel: { interval:0 } },
             yAxis: [{ type: 'value', name: 'Population',position: 'left' }, 
             { type: 'value', name: 'Growth %', position: 'right',axisLabel: { formatter: '{value} %' },splitLine: { show: false } }],
-            series: [{ name:'2019 Pop', type:'bar', data: pop2019, itemStyle: { color: '#87CEFA' } }, 
-            { name:'2050 Pop', type:'bar', data: pop2050, itemStyle: { color: '#5470c6' } },
+            series: [{ name:'2019 Population', type:'bar', data: pop2019, itemStyle: { color: '#87CEFA' } }, 
+            { name:'2050 Population', type:'bar', data: pop2050, itemStyle: { color: '#5470c6' } },
             { name:'Growth %', type:'line', data: popGrowth, yAxisIndex: 1, itemStyle: { color: '#2ecc71' }, symbol: 'circle', symbolSize: 8 }]
         });
         
@@ -439,13 +439,13 @@
                     });
                     return res;
                 } },
-            legend: { data: ['2019 Emp', '2050 Emp', 'Growth %'], top:'5%'},
+            legend: { data: ['2019 Employment', '2050 Employment', 'Growth %'], top:'5%'},
             grid:{bottom:'15%', right: '10%'},
             xAxis: { type: 'category', data: counties, axisLabel: { interval:0 } },
             yAxis: [{ type: 'value', name: 'Employment',position: 'left' }, 
             { type: 'value', name: 'Growth %', position: 'right',axisLabel: { formatter: '{value} %' },splitLine: { show: false } }],
-            series: [{ name:'2019 Emp', type:'bar', data: emp2019, itemStyle: { color: '#FFA500' } }, 
-            { name:'2050 Emp', type:'bar', data: emp2050, itemStyle: { color: '#FF8C00' } },
+            series: [{ name:'2019 Employment', type:'bar', data: emp2019, itemStyle: { color: '#fec44f' } }, 
+            { name:'2050 Employment', type:'bar', data: emp2050, itemStyle: { color: '#FF8C00' } },
             { name:'Growth %', type:'line', data: empGrowth, yAxisIndex: 1, itemStyle: { color: '#2ecc71' }, symbol: 'circle', symbolSize: 8 }]
         });
         
