@@ -328,7 +328,7 @@
             legend.style.position = 'absolute';
             legend.style.bottom = '20px';
 
-            if (year === 2019) {
+            if (year === 2050) {
                 legend.style.left = '20px';
             } else {
                 legend.style.right = '20px';
@@ -380,21 +380,21 @@
             return;
         }
     
-        // 初始化对比组 (使用 NCTCOG 常用坐标: 达拉斯 DFW)
+        
         const center = [-97.0404, 32.8975];
         const popColors = {'Very Low': '#eff3ff','Low': '#bdd7e7','Medium': '#6baed6','High': '#3182bd','Very High': '#08519c'}; // 蓝色调
         const empColors = {'Very Low': '#fff7bc','Low': '#fec44f','Medium': '#fe9929','High': '#d95f0e','Very High': '#8c2d04'}; // 黄橙色调
 
         const b1 = new mapboxgl.Map({ container: 'before1', style: 'mapbox://styles/mapbox/dark-v11', center: center, zoom: 7});
-        setupTazLayer(b1, 2019, 'POP_LVL', popColors);
+        setupTazLayer(b1, 2050, 'POP_LVL', popColors);
         const a1 = new mapboxgl.Map({ container: 'after1', style: 'mapbox://styles/mapbox/dark-v11', center: center, zoom: 7});
-        setupTazLayer(a1, 2050, 'POP_LVL', popColors);
+        setupTazLayer(a1, 2019, 'POP_LVL', popColors);
         new mapboxgl.Compare(b1, a1, '#wrapper1', {});
 
         const b2 = new mapboxgl.Map({ container: 'before2', style: 'mapbox://styles/mapbox/dark-v11', center: center, zoom: 7});
-        setupTazLayer(b2, 2019, 'EMP_LVL', empColors);
+        setupTazLayer(b2, 2050, 'EMP_LVL', empColors);
         const a2 = new mapboxgl.Map({ container: 'after2', style: 'mapbox://styles/mapbox/dark-v11', center: center, zoom: 7});
-        setupTazLayer(a2, 2050, 'EMP_LVL', empColors);
+        setupTazLayer(a2, 2019, 'EMP_LVL', empColors);
         new mapboxgl.Compare(b2, a2, '#wrapper2', {});
 
         maps.push(b1, a1, b2, a2);
